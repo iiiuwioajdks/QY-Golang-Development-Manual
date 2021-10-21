@@ -85,4 +85,89 @@ docker run -d \
 
 文档的测试写的这么详细主要是因为要跟前端对接，你把url用户名密码给前端，前端就能根据你测试的数据进行开发，这样就能省去写文档的功夫，毕竟go写文档挺痛苦的。
 
-## 二.开发环境搭建
+## 二.开发环境搭建(Docker)
+
+### Docker安装
+
+#### 安装依赖包
+
+```powershell
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2 
+1
+```
+
+#### 设置阿里云镜像源
+
+```powershell
+sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo 
+1
+```
+
+#### 安装 Docker-CE
+
+```powershell
+sudo yum install docker-ce
+```
+
+#### 启动docker
+
+```powershell
+# 开机自启
+sudo systemctl enable docker 
+# 启动docker服务  
+sudo systemctl start docker
+```
+
+### 配置加速
+
+```bash
+sudo mkdir -p /etc/docker
+
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]
+}
+EOF
+
+# 重启docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+
+
+### 常用容器搭建
+
+- 工作室的mysql暂时统一使用8.0.21版本
+
+```bash
+#mysql
+docker run --name 容器数据库名称 -e MYSQL_ROOT_PASSWORD=root -p 3308:3306 -d  mysql:8.0.21
+```
+
+- 工作室的redis暂时统一使用5.0.10版本
+
+```bash
+#redis
+docker run --name u -p 6380:6379 -d redis:5.0.10  --requirepass "qyniubi"
+```
+
+- nacos
+
+```bash
+#nacos
+docker run --name nacos-standalone -e MODE=standalone -e JVM_XMS=512m -e JVM_XMX=512m -e JVM_XMN=256m -p 8848:8848 -d nacos/nacos-server:latest
+
+// url
+http://ip:8848/nacos
+// account and password
+nacos
+nacos
+```
+
+
+
+## 三.单体应用开发脚手架
+
+[iiiuwioajdks/QY-golang-framework: 青鸢后端golang开发脚手架 (github.com)](https://github.com/iiiuwioajdks/QY-golang-framework)
+
