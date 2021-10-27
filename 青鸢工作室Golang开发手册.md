@@ -142,14 +142,14 @@ sudo systemctl restart docker
 
 ```bash
 #mysql
-docker run --name 容器数据库名称 -e MYSQL_ROOT_PASSWORD=root -p 3308:3306 -d  mysql:8.0.21
+docker run --name mysql容器的名字 -v /root/mysql/data:/var/lib/mysql -v /root/mysql/conf.d:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 -d mysql:8.0.21
 ```
 
 - 工作室的redis暂时统一使用5.0.10版本
 
 ```bash
 #redis
-docker run --name u -p 6380:6379 -d redis:5.0.10  --requirepass "qyniubi"
+docker run --name redis容器的名字 -v /root/redis/data:/data -v /root/redis/redis.conf:/usr/local/etc/redis/redis.conf -p 6379:6379 -d redis:5 redis-server /usr/local/etc/redis/redis.conf --requirepass "qyniubi"
 ```
 
 - nacos
